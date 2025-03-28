@@ -1,16 +1,19 @@
-output "endpoint" {
-  value = aws_eks_cluster.project102.endpoint
+output "eks_cluster_endpoint" {
+  description = "The endpoint for the EKS cluster"
+  value       = aws_eks_cluster.eks_cluster.endpoint
 }
 
-output "kubeconfig-certificate-authority-data" {
-  value = aws_eks_cluster.project102.certificate_authority[0].data
+output "eks_cluster_certificate_authority_data" {
+  description = "The certificate authority data for the EKS cluster"
+  value       = aws_eks_cluster.eks_cluster.certificate_authority[0].data
 }
-output "cluster_id" {
-  value = aws_eks_cluster.project102.id
+
+output "eks_cluster_id" {
+  description = "The unique ID of the EKS cluster"
+  value       = aws_eks_cluster.eks_cluster.id
 }
-output "cluster_endpoint" {
-  value = aws_eks_cluster.project102.endpoint
-}
-output "cluster_name" {
-  value = aws_eks_cluster.project102.name
+
+output "eks_cluster_name" {
+  description = "The name of the EKS cluster"
+  value       = aws_eks_cluster.eks_cluster.name
 }
