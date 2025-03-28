@@ -1,126 +1,188 @@
-# 𝐓𝐞𝐫𝐫𝐚𝐟𝐨𝐫𝐦:  𝐃𝐞𝐩𝐥𝐨𝐲 𝐚𝐧 𝐄𝐊𝐒 𝐂𝐥𝐮𝐬𝐭𝐞𝐫 — 𝐋𝐢𝐤𝐞 𝐚 𝐁𝐨𝐬𝐬!
+# 🚀 **Deploy an EKS Cluster with Terraform – Like a Boss!**  
 
-<p align="center">
-  <img src="https://imgur.com/7iDEQQH.png" />
-</p>
+![banner](https://imgur.com/H3vXZeI.png)
 
-------
-###  :loudspeaker: ᴛᴇʀʀᴀғᴏʀᴍ: ᴀʙᴏᴜᴛ ᴛʜɪs ᴘʀᴏᴊᴇᴄᴛ ᴍᴏᴅᴜʟᴇs 
+---
 
-*Kubernetes, often abbreviated as “K8s” (because there are 8 letters between the “K” & “s” in Kubernetes), orchestrates containerized applications to run on a cluster of hosts. K8s also allocates storage and persistent volumes to running containers, provides automatic scaling, and works continuously to maintain the desired state of applications, providing resiliency.*
+## 📌 **Project Overview**  
 
-*Terraform is an extremely popular infrastructure provisioning tool among DevOps. EKS is managed K8S solution provided by AWS, which is widely used managed K8S platform by AWS consumers.*
+![EKS Cluster Deployment](https://imgur.com/7iDEQQH.png)
 
-*Separately, Kubernetes and Terraform are powerful and popular tools for DevOps operations. However, when you decide to use them together, you will see even more benefits for container cluster management!*
+This project uses **Terraform** to provision an **Amazon EKS Cluster** on AWS. By leveraging **Infrastructure as Code (IaC)**, we automate the deployment of Kubernetes clusters with modular and reusable Terraform configurations.  
 
------
-## :loudspeaker: ᴛᴇʀʀᴀғᴏʀᴍ: ᴡʜʏ ᴅᴇᴘʟᴏʏ ᴡɪᴛʜ ᴛᴇʀʀᴀғᴏʀᴍ?
+🔹 **Kubernetes (K8s)** manages containerized applications efficiently.  
+🔹 **EKS (Elastic Kubernetes Service)** is a managed K8s solution on AWS.  
+🔹 **Terraform** simplifies infrastructure provisioning with reusable modules.  
 
-*While you could use the built-in AWS provisioning (UI, CLI, CloudFormation) for EKS clusters, Terraform provides you with several benefits:*
+With this setup, you can deploy, manage, and scale Kubernetes workloads seamlessly!  
 
-* *Terraform can be used to manage Kubernetes infrastructure, helping you to orchestrate your applications and run them at scale. This alleviates some of the challenges of running Kubernetes, including detecting configuration drift — planned & unplanned changes.*
+---
 
-* *Terraform will create resources, it will also update & delete tracked resources without requiring inspection of the API.*
+## 📁 **Project Structure**  
 
-* *Terraform understands dependency relationships between resources. For example, if an AWS Kubernetes cluster needs a specific VPC and subnet configurations, Terraform won’t attempt to create the cluster if the VPC and subnet failed to create with the proper configuration.*
+The repository follows a **modular structure** for better organization and reusability:  
 
-------
-## :loudspeaker: ᴛᴇʀʀᴀғᴏʀᴍ: ᴘʀᴇʀᴇǫᴜɪsɪᴛᴇs
-
-*For this tutorial, you will need:*
-
-* **AWS account**
-
-* **Terraform & Kubernetes installed on your IDE (I will be using VSCode)**
-
-* **AWS CLI installed and configured on your IDE**
-
-------
-## :loudspeaker: ᴛᴇʀʀᴀғᴏʀᴍ: ᴏᴜʀ ᴏʙᴊᴇᴄᴛɪᴠᴇ:
-
-1. *Create an EKS cluster (capacity of 2).*
-
-2. *Create a random string that allows 5 characters to build the cluster name.*
-
-3. *They want to output the cluster name and the ip address of the containers in the cluster.*
-
-*Lastly, all code should be in module blocks, not resource blocks.*
-
-***Let’s get started — buckle up Chuck!!***
-
-------
-
-### 𝟷| sᴇᴛ ᴜᴘ ғɪʟᴇ sʏsᴛᴇᴍ
-
-*First, clone my GitHub repository:*
-
-```
-git clone https://github.com/harshhaareddy/eks-cluster-terraform
+```tree
+EKS-CLUSTER-TERRAFORM/
+│── modules/                   # Terraform modules  
+│   ├── eks/                   # EKS module  
+│   │   ├── main.tf            # Defines EKS cluster  
+│   │   ├── outputs.tf         # Outputs for EKS cluster  
+│   │   ├── variables.tf       # Variables for EKS cluster  
+│   ├── vpc/                   # VPC module  
+│   │   ├── main.tf            # Defines networking resources  
+│   │   ├── outputs.tf         # Outputs for VPC  
+│   │   ├── variables.tf       # Variables for VPC  
+│  
+│── .gitignore                 # Git ignore file  
+│── LICENSE                    # License file  
+│── kubectl.sha256             # Checksum for kubectl  
+│── .terraform.lock.hcl         # Terraform lock file  
+│── kubernetes.tf              # Kubernetes resources definition  
+│── main.tf                    # Root Terraform configuration  
+│── outputs.tf                 # Root outputs  
+│── provider.tf                 # Provider configurations  
+│── README.md                   # Documentation (this file)  
 ```
 
-*Change into the directory to the folder shown below:*
-```
+🔹 **`modules/eks`** – Manages EKS cluster deployment.  
+🔹 **`modules/vpc`** – Handles VPC and networking setup.  
+🔹 **`provider.tf`** – Defines the AWS provider.  
+🔹 **`main.tf`** – Root Terraform script to call modules.  
+🔹 **`outputs.tf`** – Stores and displays useful deployment details.  
+
+---
+
+## 🎯 **Why Terraform for EKS?**  
+
+Using Terraform for EKS offers **several advantages** over manual provisioning:  
+
+✔ **Automated & Repeatable Deployments** – Reduce human error.  
+✔ **Infrastructure as Code (IaC)** – Easily track changes.  
+✔ **Dependency Awareness** – Ensures resources are created in the correct order.  
+✔ **Scalability & Reusability** – Modular design for better maintainability.  
+
+---
+
+## ⚡ **Prerequisites**  
+
+Before you begin, ensure you have the following installed:  
+
+✅ **AWS Account** – Sign up at [AWS](https://aws.amazon.com/) if you don’t have one.  
+✅ **Terraform** – Install from [Terraform's official site](https://developer.hashicorp.com/terraform/downloads).  
+✅ **AWS CLI** – Install and configure credentials ([guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)).  
+✅ **kubectl** – Kubernetes CLI tool ([installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)).  
+✅ **VS Code (Optional)** – Recommended IDE for managing Terraform code.  
+
+---
+
+## 🚀 **Deployment Steps**  
+
+### 1️⃣ **Clone the Repository**  
+
+```bash
+git clone https://github.com/NotHarshhaa/eks-cluster-terraform
 cd eks-cluster-terraform
 ```
 
-------
-### 𝟸| ᴛᴇʀʀᴀғᴏʀᴍ ɪɴɪᴛ, ᴘʟᴀɴ & ᴀᴘᴘʟʏ
+---
 
-*After you have created the above files, the first step is to initialize the terraform backend by using the `terraform init` command. Next, you will run the `terraform plan` command to evaluate the Terraform configuration. Finally, you will run the command `terraform apply` to apply the configuration.*
+### 2️⃣ **Initialize, Plan & Apply Terraform**  
 
-*Also, run the following command to to retrieve the access credentials for your cluster and configure kubectl:*
+Run the following Terraform commands:  
+
+```bash
+terraform init      # Initialize Terraform backend  
+terraform plan      # Preview infrastructure changes  
+terraform apply     # Deploy infrastructure  
 ```
-aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --region <REGION>
+
+📌 **Expected Outputs:**  
+
+- EKS Cluster Name  
+- Node IP Addresses  
+- VPC ID  
+
+---
+
+### 3️⃣ **Connect to Your EKS Cluster**  
+
+After deployment, retrieve cluster credentials:  
+
+```bash
+aws eks update-kubeconfig --name <EKS_CLUSTER_NAME> --region <AWS_REGION>
 ```
 
-*Run kubectl commands to manage your cluster and deploy Kubernetes configurations to it.*
+Verify cluster connectivity:  
 
-------
-### 𝟹| ᴛᴇʀʀᴀғᴏʀᴍ ᴄʟᴏᴜᴅ
+```bash
+kubectl get nodes
+```
 
-*Navigate to the Terraform Cloud platform, choose your organization and create a new workspace.*
+---
 
-![https://www.terraform.io/](https://img.shields.io/badge/Terraform-3EAAAF?style=for-the-badge&logo=terraform&logoColor=white)
+### 4️⃣ **Terraform Cloud Integration (Optional)**  
 
-*Under ***Choose your workflow***, select the version control workflow option. After you’ve selected your workflow, you’ll be directed to a different page where you will need to connect a version control provider. You will want to connect with your GitHub account and select the repo that you created in the first step.*
+If you want to integrate with **Terraform Cloud**:  
 
-*From there, you will create our new Workspace:*
+1️⃣ Go to [Terraform Cloud](https://www.terraform.io/)  
+2️⃣ Create a new **Workspace** and connect your GitHub repository.  
+3️⃣ Add the following environment variables:  
 
-*Then you will set variables for our access keys and region. To get started, click ***Configure Variables*** followed by* ***Add variable.***
+```plaintext
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_DEFAULT_REGION
+CONFIRM_DESTROY
+```
 
-*We will be inputting the below variables as ***Keys*** and then ***Value*** will be the password.*
+4️⃣ **Run the Terraform plan & apply in Terraform Cloud.**  
 
-* **IMPORTANT**: *Click ***Sensitive*** for your key variables, as this will ensure your private information is not displayed.*
+---
 
-   ⇥  **AWS_ACCESS_KEY_ID**
-   ⇥ **AWS_SECRET_ACCESS_KEY**
-   ⇥  **AWS_DEFAULT_REGION**
-   ⇥ **CONFIRM_DESTROY**
+### 5️⃣ **Destroy the Infrastructure**  
 
-------
-   ### 𝟺| ʀᴜɴ ɴᴇᴡ ᴛᴇʀʀᴀғᴏʀᴍ ᴄʟᴏᴜᴅ ᴘʟᴀɴ
+To **delete the deployed resources**, run:  
 
-   *Let’s go things kicked off — click* ***Start new run*** *under the Actions tab.*
+```bash
+terraform destroy
+```
 
-   *Once you start your run, the next step will be to ***Plan & Apply***. Your plan should finish pretty quickly and once it’s finished, you’ll be prompted to click ***Confirm & Apply****.
+Alternatively, if using **Terraform Cloud**, go to:  
+**Settings → Destruction & Deletion → Queue destroy plan.**  
 
-   *From here, click the Apply finished box, scroll to the bottom and you’ll see the Outputs in TF Cloud:*
+---
 
-   *Let’s pop to the ***AWS EC2*** console and confirm that you have correctly setup your cluster. As you can see from the image below, everything looks great!*
+## 🎉 **Congratulations! You've Successfully Deployed an EKS Cluster with Terraform!**  
 
-------
-   ### 𝟻| ᴛᴇʀʀᴀғᴏʀᴍ ᴅᴇsᴛʀᴏʏ
+![Success](https://imgur.com/7iMQJlY.gif)
 
-   *Let’s destroy our infrastructure! Yay! Navigate back to the Terraform Cloud platform, and under settings click ***Destruction and Deletion***. Click Queue destroy plan and select ***Confirm & Apply***.*
+---
 
-------
-   ## ***You’ve just deployed an EKS Cluster using Terraform Cloud CI/CD!***
+## **⭐ Hit the Star!**  
 
-<p align="center">
-  <img src="https://imgur.com/7iMQJlY.gif" />
-</p>
+If you find this repository helpful and plan to use it for learning, please consider giving it a star ⭐. Your support motivates me to keep improving and adding more valuable content! 🚀  
 
-------
-## :biohazard: ᴄʀᴇᴅɪᴛs & ᴍᴏʀᴇ ᴀʙᴏᴜᴛ ʟɪᴋᴇ ᴛʜɪs ᴏʀ ғᴏʟʟᴏᴡ
+---
 
-Ⓒ [Harshhaa Dev Projects](https://github.com/Harshhaa-Dev-Projects.git) - Made with :yellow_heart: from [Harshhaa Vardhan Reddy](https://github.com/NotHarshhaa.git)
+## 🛠️ **Author & Community**  
+
+This project is crafted with passion by **[Harshhaa](https://github.com/NotHarshhaa)** 💡.  
+
+I’d love to hear your feedback! Feel free to open an issue, suggest improvements, or just drop by for a discussion. Let’s build a strong DevOps community together!  
+
+---
+
+## 📧 **Let's Connect!**  
+
+Stay connected and explore more DevOps content with me:  
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/harshhaa-vardhan-reddy)  [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NotHarshhaa)  [![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/prodevopsguy)  [![Dev.to](https://img.shields.io/badge/Dev.to-0A0A0A?style=for-the-badge&logo=dev.to&logoColor=white)](https://dev.to/notharshhaa)  [![Hashnode](https://img.shields.io/badge/Hashnode-2962FF?style=for-the-badge&logo=hashnode&logoColor=white)](https://hashnode.com/@prodevopsguy)  
+
+---
+
+## 📢 **Stay Updated!**  
+
+Want to stay up to date with the latest DevOps trends, best practices, and project updates? Follow me on my blogs and social channels!  
+
+![Follow Me](https://imgur.com/2j7GSPs.png)
