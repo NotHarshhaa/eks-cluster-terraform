@@ -1,45 +1,38 @@
-###### root/provider.tf ######
-
 terraform {
+  required_version = ">= 1.3.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.15.0"
+      version = "~> 5.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.1.0"
+      version = "~> 3.5"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.0.1"
+      version = "~> 2.30"
     }
   }
 }
 
-# AWS Provider Configuration
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
-# Fetch EKS Cluster Information
-data "aws_eks_cluster" "cluster" {
-  name = module.eks.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
-
-# Kubernetes Provider Configuration
+# Kubernetes provider authenticates against the EKS cluster via the
+# `aws eks get-token` exec plugin. Unlike a static token from
+# `data.aws_eks_cluster_auth`, the token is generated fresh on every
+# Terraform run, so long applies never fail with an expired token.
+# (Requires AWS CLI v2 on the machine running Terraform.)
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(module.eks.kubeconfig-certificate-authority-data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-}
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
 
-# Generate a Random Suffix for Unique Naming
-resource "random_string" "suffix" {
-  length  = 5
-  special = false
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name, "--region", var.aws_region]
+  }
 }

@@ -1,76 +1,63 @@
-###### modules/vpc/variables.tf ######
+####### modules/vpc/variables.tf #######
 
-# VPC CIDR Block
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
 }
 
-# Allowed Access IP (Optional)
-variable "access_ip" {
-  description = "IP address allowed to access the VPC"
+variable "vpc_name" {
+  description = "Name tag for the VPC"
   type        = string
-  default     = "0.0.0.0/0"
 }
 
-# Number of Public Subnets
-variable "public_sn_count" {
-  description = "Number of public subnets to create"
-  type        = number
-}
-
-# List of Public Subnet CIDR Blocks
-variable "public_cidrs" {
-  description = "List of CIDR blocks for public subnets"
-  type        = list(string)
-}
-
-# Instance Tenancy
 variable "instance_tenancy" {
-  description = "Tenancy option for instances launched in the VPC"
+  description = "Tenancy option for instances launched in the VPC (`default` or `dedicated`)"
   type        = string
   default     = "default"
 }
 
-# Resource Tags
-variable "tags" {
-  description = "Tags to assign to resources"
+variable "public_cidrs" {
+  description = "List of CIDR blocks for the public subnets. One subnet is created per CIDR, spread across Availability Zones."
+  type        = list(string)
+}
+
+variable "public_sn_name" {
+  description = "Name prefix for the public subnets (`-1`, `-2`, ... is appended per subnet)"
   type        = string
 }
 
-# Enable Public IP for Subnets
 variable "map_public_ip_on_launch" {
-  description = "Whether to enable public IP assignment on public subnets"
+  description = "Whether instances launched in the public subnets receive a public IPv4 address"
   type        = bool
   default     = true
 }
 
-# CIDR Block for Default Route Table
 variable "rt_route_cidr_block" {
-  description = "CIDR block for default route table"
+  description = "Destination CIDR for the default route through the Internet Gateway"
   type        = string
   default     = "0.0.0.0/0"
 }
 
 variable "route_table_name" {
-  description = "Name of the route table"
+  description = "Name tag for the public route table"
   type        = string
-  default     = "project102-route-table"
-}
-
-variable "public_sn_name" {
-  description = "The name prefix for public subnets"
-  type        = string
+  default     = "eks-public-route-table"
 }
 
 variable "igw_name" {
-  description = "Name of the Internet Gateway"
+  description = "Name tag for the Internet Gateway"
   type        = string
-  default     = "project102-igw"
+  default     = "eks-internet-gateway"
 }
 
-# Variable for VPC Name
-variable "vpc_name" {
-  description = "The name of the VPC"
+variable "cluster_name" {
+  description = "Name of the EKS cluster the VPC belongs to. Adds the `kubernetes.io/cluster/<name>` discovery tag to subnets so load balancers can be provisioned. Leave null if the VPC is not used with EKS."
   type        = string
+  default     = null
+}
+
+variable "tags" {
+  description = "Additional tags to apply to all resources in this module"
+  type        = map(string)
+  default     = {}
 }

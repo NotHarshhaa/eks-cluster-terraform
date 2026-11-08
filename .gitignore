@@ -1,14 +1,16 @@
 ###### root/.gitignore ######
 
 # Ignore Terraform working directory
+.terraform/
 **/.terraform/*
 
 # Ignore Terraform state files
 *.tfstate
 *.tfstate.*
 
-# Ignore Terraform backup files
-*.backup
+# NOTE: .terraform.lock.hcl is intentionally NOT ignored — dependency lock
+# files should be committed so every run uses the same provider versions.
+# See: https://developer.hashicorp.com/terraform/cli/commands/init#lock-file-usage
 
 # Ignore Terraform crash logs
 crash.log
@@ -26,9 +28,6 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
-# Ignore Terraform provider lock files (Can be regenerated)
-.terraform.lock.hcl
 
 # Ignore Terraform CLI configuration files
 .terraformrc

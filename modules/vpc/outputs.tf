@@ -1,25 +1,21 @@
-###### modules/vpc/outputs.tf ######
+####### modules/vpc/outputs.tf #######
 
-# Output Public Subnet IDs
-output "aws_public_subnet" {
-  description = "List of Public Subnet IDs"
-  value       = aws_subnet.public_project102_subnet[*].id
-}
-
-# Output VPC ID
 output "vpc_id" {
-  description = "VPC ID of the created VPC"
-  value       = aws_vpc.project102.id
+  description = "ID of the created VPC"
+  value       = aws_vpc.this.id
 }
 
-# Output Internet Gateway ID (Optional)
-output "igw_id" {
-  description = "Internet Gateway ID"
-  value       = aws_internet_gateway.project102_gw.id
+output "public_subnet_ids" {
+  description = "List of public subnet IDs"
+  value       = aws_subnet.public[*].id
 }
 
-# Output Route Table ID (Optional)
-output "route_table_id" {
-  description = "Route Table ID associated with public subnets"
-  value       = aws_default_route_table.internal_project102_default.id
+output "internet_gateway_id" {
+  description = "ID of the Internet Gateway attached to the VPC"
+  value       = aws_internet_gateway.this.id
+}
+
+output "public_route_table_id" {
+  description = "ID of the route table associated with the public subnets"
+  value       = aws_default_route_table.public.id
 }

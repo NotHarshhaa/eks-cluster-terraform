@@ -1,19 +1,21 @@
-output "eks_cluster_endpoint" {
-  description = "The endpoint for the EKS cluster"
-  value       = aws_eks_cluster.eks_cluster.endpoint
-}
+####### modules/eks/outputs.tf #######
 
-output "eks_cluster_certificate_authority_data" {
-  description = "The certificate authority data for the EKS cluster"
-  value       = aws_eks_cluster.eks_cluster.certificate_authority[0].data
-}
-
-output "eks_cluster_id" {
+output "cluster_id" {
   description = "The unique ID of the EKS cluster"
-  value       = aws_eks_cluster.eks_cluster.id
+  value       = aws_eks_cluster.this.id
 }
 
-output "eks_cluster_name" {
+output "cluster_name" {
   description = "The name of the EKS cluster"
-  value       = aws_eks_cluster.eks_cluster.name
+  value       = aws_eks_cluster.this.name
+}
+
+output "cluster_endpoint" {
+  description = "The API server endpoint of the EKS control plane"
+  value       = aws_eks_cluster.this.endpoint
+}
+
+output "cluster_certificate_authority_data" {
+  description = "Base64-encoded certificate authority data of the EKS cluster"
+  value       = aws_eks_cluster.this.certificate_authority[0].data
 }
